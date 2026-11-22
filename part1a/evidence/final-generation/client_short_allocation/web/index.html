@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7fb">
+    <title>Short Allocation Penalty Calculator</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: #17243b;
+        background: #f5f7fb;
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        min-width: 320px;
+        min-height: 100vh;
+        margin: 0;
+        background:
+          radial-gradient(ellipse at 85% 0%, rgba(201, 222, 255, .48), transparent 34rem),
+          #f5f7fb;
+      }
+
+      .shell { width: min(100% - 36px, 1040px); margin: 0 auto; padding: 48px 0; }
+      .eyebrow { color: #526c93; font-size: .75rem; font-weight: 750; letter-spacing: .14em; text-transform: uppercase; }
+      h1 { margin: 10px 0 8px; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -.055em; }
+      .intro { max-width: 600px; margin: 0; color: #61708a; line-height: 1.65; }
+
+      .workspace { display: grid; grid-template-columns: minmax(0, 1fr) minmax(290px, .8fr); gap: 22px; margin-top: 32px; align-items: start; }
+      .card { padding: clamp(22px, 4vw, 32px); border: 1px solid #e4e9f2; border-radius: 18px; background: rgba(255, 255, 255, .94); box-shadow: 0 14px 40px rgba(33, 55, 91, .06); }
+      h2 { margin: 0 0 22px; font-size: 1.1rem; letter-spacing: -.02em; }
+      .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 14px; }
+      .field { display: grid; gap: 7px; }
+      .field.full { grid-column: 1 / -1; }
+      label { font-size: .83rem; font-weight: 650; color: #34445f; }
+      input, select {
+        width: 100%;
+        min-height: 46px;
+        padding: 0 13px;
+        border: 1px solid #dce3ee;
+        border-radius: 9px;
+        background: #fff;
+        color: #17243b;
+        font: inherit;
+        font-size: .94rem;
+        outline: none;
+        transition: border-color .15s, box-shadow .15s;
+      }
+      input::placeholder { color: #a0aabd; }
+      input:focus, select:focus { border-color: #3768d9; box-shadow: 0 0 0 3px rgba(55, 104, 217, .13); }
+      .hint { margin: 0; color: #7b879a; font-size: .76rem; line-height: 1.45; }
+
+      button {
+        width: 100%;
+        min-height: 48px;
+        margin-top: 24px;
+        border: 0;
+        border-radius: 10px;
+        background: #2457c5;
+        color: #fff;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background .15s, transform .15s;
+      }
+      button:hover { background: #1d49a8; }
+      button:active { transform: translateY(1px); }
+      button:disabled { cursor: wait; opacity: .7; }
+
+      .result-card { min-height: 330px; }
+      .empty-state { display: grid; min-height: 235px; align-content: center; justify-items: center; padding: 24px; border: 1px dashed #dce3ee; border-radius: 12px; color: #77859b; text-align: center; }
+      .empty-icon { display: grid; width: 44px; height: 44px; margin-bottom: 12px; place-items: center; border-radius: 13px; background: #edf2ff; color: #3768d9; font-size: 1.25rem; }
+      .empty-state p { max-width: 210px; margin: 0; font-size: .88rem; line-height: 1.55; }
+      .result { display: none; }
+      .result.visible { display: block; }
+      .penalty { margin-bottom: 20px; padding: 20px; border-radius: 12px; background: #edf3ff; }
+      .metric-label { color: #657693; font-size: .78rem; font-weight: 650; }
+      .penalty-value { margin-top: 5px; color: #204da9; font-size: 2rem; font-weight: 760; letter-spacing: -.045em; }
+      .metrics { display: grid; gap: 0; }
+      .metric { display: flex; justify-content: space-between; gap: 12px; padding: 13px 0; border-bottom: 1px solid #edf0f5; font-size: .86rem; }
+      .metric:last-child { border-bottom: 0; }
+      .metric span:first-child { color: #68768c; }
+      .metric output { color: #263650; font-weight: 650; font-variant-numeric: tabular-nums; text-align: right; overflow-wrap: anywhere; }
+      .error { display: none; margin-top: 16px; padding: 12px 14px; border: 1px solid #f3c5c5; border-radius: 9px; background: #fff4f3; color: #a22e2e; font-size: .85rem; line-height: 1.5; }
+      .error.visible { display: block; }
+      .footnote { margin: 18px 2px 0; color: #7b879a; font-size: .76rem; line-height: 1.5; }
+
+      @media (max-width: 760px) {
+        .shell { padding: 32px 0; }
+        .workspace { grid-template-columns: 1fr; }
+        .result-card { min-height: 0; }
+        .empty-state { min-height: 170px; }
+      }
+      @media (max-width: 450px) {
+        .shell { width: min(100% - 24px, 1040px); }
+        .fields { grid-template-columns: 1fr; }
+        .field.full { grid-column: auto; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header>
+        <div class="eyebrow">Clearing operations · Part 1a</div>
+        <h1>Short allocation penalty</h1>
+        <p class="intro">Enter a client’s margin and collateral details to calculate the shortfall, applicable slab, and penalty.</p>
+      </header>
+
+      <div class="workspace">
+        <section class="card" aria-labelledby="request-heading">
+          <h2 id="request-heading">Calculation inputs</h2>
+          <form id="calculation-form">
+            <div class="fields">
+              <div class="field full">
+                <label for="client-id">Client ID</label>
+                <input id="client-id" name="client_id" type="text" placeholder="e.g. CLIENT-001" autocomplete="off" required>
+              </div>
+              <div class="field">
+                <label for="segment">Segment</label>
+                <select id="segment" name="segment" required>
+                  <option value="CASH">CASH</option>
+                  <option value="FO">FO</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="grace-limit">Grace limit (%)</label>
+                <input id="grace-limit" name="grace_limit_pct" type="text" inputmode="decimal" value="0" autocomplete="off" required>
+                <p class="hint">Optional policy allowance; defaults to 0%.</p>
+              </div>
+              <div class="field">
+                <label for="peak-margin">Peak margin required (INR)</label>
+                <input id="peak-margin" name="peak_margin_required" type="text" inputmode="decimal" placeholder="e.g. 100000" autocomplete="off" required>
+              </div>
+              <div class="field">
+                <label for="collateral">Allocated collateral (INR)</label>
+                <input id="collateral" name="allocated_collateral" type="text" inputmode="decimal" placeholder="e.g. 80000" autocomplete="off" required>
+              </div>
+            </div>
+            <button id="submit-button" type="submit">Calculate penalty</button>
+            <div id="error-message" class="error" role="alert"></div>
+          </form>
+        </section>
+
+        <section class="card result-card" aria-labelledby="result-heading" aria-live="polite">
+          <h2 id="result-heading">Calculation result</h2>
+          <div id="empty-state" class="empty-state">
+            <div class="empty-icon" aria-hidden="true">↗</div>
+            <p>Your calculation results will appear here.</p>
+          </div>
+          <div id="result" class="result">
+            <div class="penalty">
+              <div class="metric-label">Penalty amount</div>
+              <div class="penalty-value">₹<output id="penalty-amount">0.00</output></div>
+            </div>
+            <div class="metrics">
+              <div class="metric"><span>Client ID</span><output id="result-client"></output></div>
+              <div class="metric"><span>Segment</span><output id="result-segment"></output></div>
+              <div class="metric"><span>Raw shortfall</span><output id="raw-shortfall"></output></div>
+              <div class="metric"><span>Net shortfall</span><output id="net-shortfall"></output></div>
+              <div class="metric"><span>Applicable slab</span><output id="slab-pct"></output></div>
+            </div>
+          </div>
+          <p class="footnote">Penalty slabs are applied to net shortfall: 0.5% up to ₹1,00,000; 1% up to ₹10,00,000; 5% above ₹10,00,000. Final penalty is rounded to two decimals.</p>
+        </section>
+      </div>
+    </main>
+    <script>
+      const form = document.querySelector("#calculation-form");
+      const button = document.querySelector("#submit-button");
+      const errorMessage = document.querySelector("#error-message");
+      const resultPanel = document.querySelector("#result");
+      const emptyState = document.querySelector("#empty-state");
+
+      function showError(message) {
+        errorMessage.textContent = message;
+        errorMessage.classList.add("visible");
+        resultPanel.classList.remove("visible");
+        emptyState.hidden = false;
+      }
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        errorMessage.classList.remove("visible");
+        button.disabled = true;
+        button.textContent = "Calculating…";
+
+        const values = Object.fromEntries(new FormData(form));
+        try {
+          const response = await fetch("/api/calculate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(values),
+          });
+          const data = await response.json();
+          if (!response.ok) {
+            showError(data.error || "Unable to calculate the penalty.");
+            return;
+          }
+
+          document.querySelector("#penalty-amount").textContent = data.penalty_amount;
+          document.querySelector("#result-client").textContent = data.client_id;
+          document.querySelector("#result-segment").textContent = data.segment;
+          document.querySelector("#raw-shortfall").textContent = data.raw_shortfall;
+          document.querySelector("#net-shortfall").textContent = data.net_shortfall;
+          document.querySelector("#slab-pct").textContent = `${data.applicable_slab_pct}%`;
+          emptyState.hidden = true;
+          resultPanel.classList.add("visible");
+        } catch {
+          showError("Could not reach the calculator. Check that the local server is running and try again.");
+        } finally {
+          button.disabled = false;
+          button.textContent = "Calculate penalty";
+        }
+      });
+    </script>
+  </body>
+</html>

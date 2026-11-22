@@ -1,0 +1,1 @@
+{"client_id": "CLIENT", "segment": "CASH", "raw_shortfall": "20000", "net_shortfall": "10000", "applicable_slab_pct": "0.5", "penalty_amount": "50.00"}

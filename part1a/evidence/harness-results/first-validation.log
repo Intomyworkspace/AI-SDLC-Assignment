@@ -1,0 +1,108 @@
+All checks passed!
+
+========== RUFF LINT CHECK ==========
+
+LINT GATE: PASS
+[main]	INFO	profile include tests: None
+[main]	INFO	profile exclude tests: None
+[main]	INFO	cli include tests: None
+[main]	INFO	cli exclude tests: None
+[main]	INFO	running on Python 3.14.2
+Run started:2026-11-22 14:45:34.514625+00:00
+
+Test results:
+	No issues identified.
+
+Code scanned:
+	Total lines of code: 296
+	Total lines skipped (#nosec): 0
+	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 0
+
+Run metrics:
+	Total issues (by severity):
+		Undefined: 0
+		Low: 0
+		Medium: 0
+		High: 0
+	Total issues (by confidence):
+		Undefined: 0
+		Low: 0
+		Medium: 0
+		High: 0
+Files skipped (0):
+
+========== BANDIT SECURITY CHECK ==========
+
+SECURITY GATE: PASS
+============================= test session starts ==============================
+platform linux -- Python 3.14.2, pytest-9.2.0, pluggy-1.7.0 -- /workspaces/AI-SDLC-Assignment/AI-SDLC-Assignment/part1a/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspaces/AI-SDLC-Assignment/AI-SDLC-Assignment/part1a
+configfile: pyproject.toml
+testpaths: tests
+collecting ... collected 44 items
+
+tests/contract/test_cli.py::test_cli_emits_required_decimal_string_fields PASSED [  2%]
+tests/contract/test_cli.py::test_cli_grace_is_optional_and_equal_invocations_are_deterministic PASSED [  4%]
+tests/contract/test_cli.py::test_cli_invalid_input_exits_without_success_result[arguments0-peak_margin_required] PASSED [  6%]
+tests/contract/test_cli.py::test_cli_invalid_input_exits_without_success_result[arguments1-segment] PASSED [  9%]
+tests/contract/test_cli.py::test_cli_missing_required_flag_reports_the_flag PASSED [ 11%]
+tests/contract/test_web.py::test_web_page_is_served PASSED               [ 13%]
+tests/contract/test_web.py::test_web_calculation_returns_exact_result_and_defaults_grace PASSED [ 15%]
+tests/contract/test_web.py::test_web_rejects_invalid_input_without_returning_a_result[body0-peak_margin_required] PASSED [ 18%]
+tests/contract/test_web.py::test_web_rejects_invalid_input_without_returning_a_result[not-json-valid JSON] PASSED [ 20%]
+tests/unit/test_calculator.py::test_calculates_raw_and_grace_adjusted_shortfall PASSED [ 22%]
+tests/unit/test_calculator.py::test_grace_defaults_to_zero_and_over_allocation_has_no_penalty PASSED [ 25%]
+tests/unit/test_calculator.py::test_grace_that_offsets_or_exceeds_shortfall_has_no_penalty[grace_limit_pct0] PASSED [ 27%]
+tests/unit/test_calculator.py::test_grace_that_offsets_or_exceeds_shortfall_has_no_penalty[grace_limit_pct1] PASSED [ 29%]
+tests/unit/test_calculator.py::test_selects_slab_at_and_around_boundaries[net_shortfall0-slab_pct0] PASSED [ 31%]
+tests/unit/test_calculator.py::test_selects_slab_at_and_around_boundaries[net_shortfall1-slab_pct1] PASSED [ 34%]
+tests/unit/test_calculator.py::test_selects_slab_at_and_around_boundaries[net_shortfall2-slab_pct2] PASSED [ 36%]
+tests/unit/test_calculator.py::test_selects_slab_at_and_around_boundaries[net_shortfall3-slab_pct3] PASSED [ 38%]
+tests/unit/test_calculator.py::test_selects_slab_at_and_around_boundaries[net_shortfall4-slab_pct4] PASSED [ 40%]
+tests/unit/test_calculator.py::test_preserves_intermediate_decimal_precision PASSED [ 43%]
+tests/unit/test_calculator.py::test_uses_sufficient_precision_without_changing_caller_context PASSED [ 45%]
+tests/unit/test_calculator.py::test_rounds_penalty_ties_half_up PASSED   [ 47%]
+tests/unit/test_validation.py::test_rejects_empty_or_non_string_client_id[] PASSED [ 50%]
+tests/unit/test_validation.py::test_rejects_empty_or_non_string_client_id[   ] PASSED [ 52%]
+tests/unit/test_validation.py::test_rejects_empty_or_non_string_client_id[None] PASSED [ 54%]
+tests/unit/test_validation.py::test_rejects_empty_or_non_string_client_id[123] PASSED [ 56%]
+tests/unit/test_validation.py::test_rejects_unsupported_segment[cash] PASSED [ 59%]
+tests/unit/test_validation.py::test_rejects_unsupported_segment[EQUITY] PASSED [ 61%]
+tests/unit/test_validation.py::test_rejects_unsupported_segment[] PASSED [ 63%]
+tests/unit/test_validation.py::test_rejects_unsupported_segment[None] PASSED [ 65%]
+tests/unit/test_validation.py::test_rejects_negative_or_non_decimal_values[peak_margin_required-value0] PASSED [ 68%]
+tests/unit/test_validation.py::test_rejects_negative_or_non_decimal_values[allocated_collateral-value1] PASSED [ 70%]
+tests/unit/test_validation.py::test_rejects_negative_or_non_decimal_values[grace_limit_pct-value2] PASSED [ 72%]
+tests/unit/test_validation.py::test_rejects_negative_or_non_decimal_values[peak_margin_required-1] PASSED [ 75%]
+tests/unit/test_validation.py::test_rejects_negative_or_non_decimal_values[allocated_collateral-1.0] PASSED [ 77%]
+tests/unit/test_validation.py::test_rejects_negative_or_non_decimal_values[grace_limit_pct-1.0] PASSED [ 79%]
+tests/unit/test_validation.py::test_rejects_non_finite_decimal_values[peak_margin_required-value0] PASSED [ 81%]
+tests/unit/test_validation.py::test_rejects_non_finite_decimal_values[peak_margin_required-value1] PASSED [ 84%]
+tests/unit/test_validation.py::test_rejects_non_finite_decimal_values[peak_margin_required-value2] PASSED [ 86%]
+tests/unit/test_validation.py::test_rejects_non_finite_decimal_values[allocated_collateral-value0] PASSED [ 88%]
+tests/unit/test_validation.py::test_rejects_non_finite_decimal_values[allocated_collateral-value1] PASSED [ 90%]
+tests/unit/test_validation.py::test_rejects_non_finite_decimal_values[allocated_collateral-value2] PASSED [ 93%]
+tests/unit/test_validation.py::test_rejects_non_finite_decimal_values[grace_limit_pct-value0] PASSED [ 95%]
+tests/unit/test_validation.py::test_rejects_non_finite_decimal_values[grace_limit_pct-value1] PASSED [ 97%]
+tests/unit/test_validation.py::test_rejects_non_finite_decimal_values[grace_limit_pct-value2] PASSED [100%]
+
+============================== 44 passed in 2.52s ==============================
+
+========== UNIT & CONTRACT TESTS ==========
+
+TEST GATE: PASS
+
+========== PART 1A HARNESS ==========
+
+Running LINT gate...
+
+Running SECURITY gate...
+
+Running TESTS gate...
+
+========== FINAL HARNESS REPORT ==========
+LINT: PASS
+SECURITY: PASS
+TESTS: PASS
+OVERALL RESULT: PASS
