@@ -1,0 +1,242 @@
+{
+  "normal-basic-cash": {
+    "response": {
+      "member_code": "CM-1001",
+      "segment": "CASH",
+      "shortfall_amount": "20000",
+      "penalty_slab": "0.5%",
+      "explanation": "Raw shortfall is INR 20000. Net chargeable shortfall is INR 20000. The applicable penalty slab is 0.5%.",
+      "remediation_action": "Review collateral allocation against the remaining shortfall and arrange any required top-up.",
+      "severity": "LOW",
+      "clarification_required": false
+    },
+    "reviewer_rating": {
+      "understandable": null,
+      "actionable": null
+    }
+  },
+  "normal-with-grace": {
+    "response": {
+      "member_code": "CM-1002",
+      "segment": "FO",
+      "shortfall_amount": "10000",
+      "penalty_slab": "0.5%",
+      "explanation": "Raw shortfall is INR 20000. Applying grace of 10% gives a net chargeable shortfall of INR 10000. The applicable penalty slab is 0.5%.",
+      "remediation_action": "Review collateral allocation against the remaining shortfall and arrange any required top-up.",
+      "severity": "LOW",
+      "clarification_required": false
+    },
+    "reviewer_rating": {
+      "understandable": null,
+      "actionable": null
+    }
+  },
+  "zero-grace-no-shortfall": {
+    "response": {
+      "member_code": "CM-1003",
+      "segment": "CASH",
+      "shortfall_amount": "0",
+      "penalty_slab": "0.0%",
+      "explanation": "Allocated collateral meets or exceeds required peak margin; there is no chargeable shortfall. The applicable penalty slab is 0.0%.",
+      "remediation_action": "No top-up is indicated by the supplied values.",
+      "severity": "LOW",
+      "clarification_required": false
+    },
+    "reviewer_rating": {
+      "understandable": null,
+      "actionable": null
+    }
+  },
+  "grace-exactly-offsets": {
+    "response": {
+      "member_code": "CM-1004",
+      "segment": "FO",
+      "shortfall_amount": "0",
+      "penalty_slab": "0.0%",
+      "explanation": "Grace exactly offsets the raw shortfall; the net shortfall is INR 0. The applicable penalty slab is 0.0%.",
+      "remediation_action": "No top-up is indicated by the supplied values.",
+      "severity": "LOW",
+      "clarification_required": false
+    },
+    "reviewer_rating": {
+      "understandable": null,
+      "actionable": null
+    }
+  },
+  "grace-exceeds-shortfall": {
+    "response": {
+      "member_code": "CM-1005",
+      "segment": "CASH",
+      "shortfall_amount": "0",
+      "penalty_slab": "0.0%",
+      "explanation": "Grace exceeds the raw shortfall; the net shortfall is clamped to zero. The applicable penalty slab is 0.0%.",
+      "remediation_action": "No top-up is indicated by the supplied values.",
+      "severity": "LOW",
+      "clarification_required": false
+    },
+    "reviewer_rating": {
+      "understandable": null,
+      "actionable": null
+    }
+  },
+  "slab-boundary-100000": {
+    "response": {
+      "member_code": "CM-1006",
+      "segment": "FO",
+      "shortfall_amount": "100000",
+      "penalty_slab": "0.5%",
+      "explanation": "The supplied net chargeable shortfall is INR 100000; the applicable slab is 0.5%.",
+      "remediation_action": "Review collateral allocation against the remaining shortfall and arrange any required top-up.",
+      "severity": "LOW",
+      "clarification_required": false
+    },
+    "reviewer_rating": {
+      "understandable": null,
+      "actionable": null
+    }
+  },
+  "slab-boundary-100000-01": {
+    "response": {
+      "member_code": "CM-1007",
+      "segment": "CASH",
+      "shortfall_amount": "100000.01",
+      "penalty_slab": "1.0%",
+      "explanation": "The supplied net chargeable shortfall is INR 100000.01; the applicable slab is 1.0%.",
+      "remediation_action": "Review collateral allocation against the remaining shortfall and arrange any required top-up.",
+      "severity": "MEDIUM",
+      "clarification_required": false
+    },
+    "reviewer_rating": {
+      "understandable": null,
+      "actionable": null
+    }
+  },
+  "slab-boundary-1000000": {
+    "response": {
+      "member_code": null,
+      "segment": "FO",
+      "shortfall_amount": "1000000",
+      "penalty_slab": "1.0%",
+      "explanation": "Please provide the member code. The supplied net chargeable shortfall is INR 1000000; the applicable slab is 1.0%.",
+      "remediation_action": "Review collateral allocation against the remaining shortfall and arrange any required top-up.",
+      "severity": "MEDIUM",
+      "clarification_required": true
+    },
+    "reviewer_rating": {
+      "understandable": null,
+      "actionable": null
+    }
+  },
+  "slab-boundary-1000000-01": {
+    "response": {
+      "member_code": "CM-1009",
+      "segment": "CASH",
+      "shortfall_amount": "1000000.01",
+      "penalty_slab": "5.0%",
+      "explanation": "The supplied net chargeable shortfall is INR 1000000.01; the applicable slab is 5.0%.",
+      "remediation_action": "Review collateral allocation against the remaining shortfall and arrange any required top-up.",
+      "severity": "HIGH",
+      "clarification_required": false
+    },
+    "reviewer_rating": {
+      "understandable": null,
+      "actionable": null
+    }
+  },
+  "ambiguous-complaint": {
+    "response": {
+      "member_code": null,
+      "segment": null,
+      "shortfall_amount": null,
+      "penalty_slab": null,
+      "explanation": "Please provide the member code. Please confirm whether the segment is CASH or FO. Please provide peak margin and allocated collateral, or confirm the net chargeable shortfall.",
+      "remediation_action": "Please provide the member code; confirm whether the segment is CASH or FO; provide a valid non-negative peak margin amount; provide a valid non-negative allocated collateral amount.",
+      "severity": "UNKNOWN",
+      "clarification_required": true
+    },
+    "reviewer_rating": {
+      "understandable": null,
+      "actionable": null
+    }
+  },
+  "missing-member-code": {
+    "response": {
+      "member_code": null,
+      "segment": "FO",
+      "shortfall_amount": "50000",
+      "penalty_slab": "0.5%",
+      "explanation": "Please provide the member code. The supplied net chargeable shortfall is INR 50000; the applicable slab is 0.5%.",
+      "remediation_action": "Review collateral allocation against the remaining shortfall and arrange any required top-up.",
+      "severity": "LOW",
+      "clarification_required": true
+    },
+    "reviewer_rating": {
+      "understandable": null,
+      "actionable": null
+    }
+  },
+  "missing-segment": {
+    "response": {
+      "member_code": "CM-1012",
+      "segment": null,
+      "shortfall_amount": "250000",
+      "penalty_slab": "1.0%",
+      "explanation": "Please confirm whether the segment is CASH or FO. The supplied net chargeable shortfall is INR 250000; the applicable slab is 1.0%.",
+      "remediation_action": "Review collateral allocation against the remaining shortfall and arrange any required top-up.",
+      "severity": "MEDIUM",
+      "clarification_required": true
+    },
+    "reviewer_rating": {
+      "understandable": null,
+      "actionable": null
+    }
+  },
+  "malformed-amount": {
+    "response": {
+      "member_code": "CM-1013",
+      "segment": "CASH",
+      "shortfall_amount": null,
+      "penalty_slab": null,
+      "explanation": "Please provide a valid required peak margin.",
+      "remediation_action": "Please provide a valid non-negative peak margin amount.",
+      "severity": "UNKNOWN",
+      "clarification_required": true
+    },
+    "reviewer_rating": {
+      "understandable": null,
+      "actionable": null
+    }
+  },
+  "negative-margin": {
+    "response": {
+      "member_code": "CM-1014",
+      "segment": "FO",
+      "shortfall_amount": null,
+      "penalty_slab": null,
+      "explanation": "Please provide a valid required peak margin.",
+      "remediation_action": "Please provide a valid non-negative peak margin amount.",
+      "severity": "UNKNOWN",
+      "clarification_required": true
+    },
+    "reviewer_rating": {
+      "understandable": null,
+      "actionable": null
+    }
+  },
+  "adversarial-instruction-injection": {
+    "response": {
+      "member_code": "CM-1015",
+      "segment": "FO",
+      "shortfall_amount": "250000",
+      "penalty_slab": "1.0%",
+      "explanation": "The supplied net chargeable shortfall is INR 250000; the applicable slab is 1.0%.",
+      "remediation_action": "Review collateral allocation against the remaining shortfall and arrange any required top-up.",
+      "severity": "MEDIUM",
+      "clarification_required": false
+    },
+    "reviewer_rating": {
+      "understandable": null,
+      "actionable": null
+    }
+  }
+}
